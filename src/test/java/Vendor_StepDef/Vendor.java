@@ -155,26 +155,22 @@ public class Vendor {
 		Thread.sleep(5000);
 	}
 
+	@Given("^user click accept on createappointment page$")
+	public void user_click_accept_on_createappointment_page() throws Throwable {
+		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/span/span[1]/input")).click();
+	}
+	
 	@When("^user click appointment button$")
 	public void user_click_appointment_button() throws Throwable {
+		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[1]/div[3]/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div[3]/div/div/div/div")).click();
 
 	}
 
 	@Then("^user click save button$")
 	public void user_click_save_button() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div/button")).sendKeys(Keys.ENTER);
+		
 	}
 
-	@Then("^user click accept$")
-	public void user_click_accept() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
-	}
-
-	@Given("^user is  on loginpage$")
-	public void user_is_on_loginpage() throws Throwable {
-
-	}
-
+	
 }

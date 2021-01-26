@@ -19,6 +19,6 @@ Feature: Test Scenario1 (TS_002)  Vendor สร้างการนัดหม
     And user add file by "C:\Users\Chayanee.jun\Documents\test\Cucumber_Selenium\file_for_test\test1.jpg" path
     And user input file to upload is "เอกสาร Quotation"
     And user input file to upload is "เอกสาร Catalog "
+    And user click accept on createappointment page
     When user click appointment button
     Then user click save button
-    Then user click accept
