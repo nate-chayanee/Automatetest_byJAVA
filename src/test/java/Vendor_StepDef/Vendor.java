@@ -69,7 +69,7 @@ public class Vendor {
 
 	@Then("^user is on homepage$")
 	public void user_is_on_homepage() throws Throwable {
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		String url = "http://localhost:3000/app/home";
 		String get_url = driver.getCurrentUrl();
 		assertEquals(url, get_url);
@@ -105,7 +105,7 @@ public class Vendor {
 		WebElement dateInput = driver.findElement(By.xpath("//*[contains(@id,'operate_date')]"));
 		dateInput.clear();
 		dateInput.sendKeys(date);
-		dateInput.sendKeys(Keys.TAB);
+		dateInput.sendKeys(Keys.ENTER);
 		Thread.sleep(1000);
 	}
 
@@ -183,14 +183,21 @@ public class Vendor {
 	public void has_a_pop_up_as(String massage) throws Throwable {
 		WebElement popup = driver.findElement(By.xpath("//*[@id=\"client-snackbar\"]"));
 		String txt_popup = popup.getText();
-		assertEquals(massage,txt_popup);
-		
-		
+		assertEquals(massage,txt_popup);		
+	}
+	
+	@Then("^website has a pop up under date input as \"([^\"]*)\"$")
+	public void website_has_a_pop_up_under_date_input_as(String massage) throws Throwable {
+		WebElement popup = driver.findElement(By.xpath("//*[contains(text(),'Value must be a date or time')]"));
+		String txt_popup = popup.getText();
+		System.out.println(txt_popup);
+		assertEquals(massage,txt_popup);	
 	}
 	
 	@When("^user refresh$")
 	public void user_refresh() throws Throwable {
 		driver.navigate().refresh();
+		Thread.sleep(2000);
 	}
 
 }
