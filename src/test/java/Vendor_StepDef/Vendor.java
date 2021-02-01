@@ -1,63 +1,65 @@
 package Vendor_StepDef;
 
 import static org.junit.Assert.assertEquals;
-
-import java.awt.RenderingHints.Key;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.xml.xpath.XPath;
-
+import org.json.simple.parser.ParseException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import junit.framework.Assert;
+
 
 public class Vendor {
 	public static WebDriver driver;
-
-	@Before
-	public void setUp() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "chromedriver_win32/chromedriver.exe");
-		driver = new ChromeDriver();
-		driver.get("http://localhost:3000");
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		driver.manage().window().maximize();
-	}
-
+	//public static Scenario scenario;
+	
+	
+	
 	@After
-	public void tearDown(Scenario scenario) {
+	public void tearDown(Scenario scenario)  {
 		if (scenario.isFailed()) {
 			// Take a screenshot...
 			final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 			// embed it in the report.
 			scenario.embed(screenshot, "image/png");
+
 		}
 	}
+	
+	
+	
+	@Given("^user is on \"([^\"]*)\" website$")
+	public void user_is_on_website(String website) throws Throwable {
+		System.setProperty("webdriver.chrome.driver", "chromedriver_win32/chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get(website);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
 
-	@Given("^login by user is \"([^\"]*)\" and password is \"([^\"]*)\"$")
+	@Then("^login by user is \"([^\"]*)\" and password is \"([^\"]*)\"$")
 	public void login_by_user_is_and_password_is(String user, String password) throws Throwable {
 		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div[1]/div[1]/div[2]/div/div[1]/input"))
 				.sendKeys(user);
 		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div[1]/div[2]/div[2]/div/div[1]/input"))
 				.sendKeys(password);
+		
 	}
 
 	@When("^user click on login button$")
@@ -101,10 +103,10 @@ public class Vendor {
 	@Given("^user input date as \"([^\"]*)\"$")
 	public void user_input_date_as(String date) throws Throwable {
 		WebElement dateInput = driver.findElement(By.xpath("//*[contains(@id,'operate_date')]"));
-		;
 		dateInput.clear();
 		dateInput.sendKeys(date);
 		dateInput.sendKeys(Keys.TAB);
+		Thread.sleep(1000);
 	}
 
 	@Given("^user input time as \"([^\"]*)\"$")
@@ -131,7 +133,7 @@ public class Vendor {
 		ArrayList<WebElement> selects = (ArrayList<WebElement>) driver
 				.findElements(By.xpath("//*[contains(@id,'product_groups_id')]"));
 		selects.get(0).sendKeys(product);
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 		selects.get(0).sendKeys(Keys.ENTER);
 
 	}
@@ -145,32 +147,50 @@ public class Vendor {
 	public void user_add_file_by_path(String path) throws Throwable {
 
 		ArrayList<WebElement> selects = (ArrayList<WebElement>) driver.findElements(By.name("files[]"));
-
-		selects.get(0).sendKeys(path);
+		Path currentRelativePath = Paths.get("");
+		String s = currentRelativePath.toAbsolutePath().toString();
+		selects.get(0).sendKeys(s+path);
 	}
 
 	@Given("^user input file to upload is \"([^\"]*)\"$")
 	public void user_input_file_to_upload_is(String file) throws Throwable {
 		driver.findElement(By.xpath("//*[contains(text(),'" + file + "')]")).click();
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 	}
 
 	@Given("^user click accept on createappointment page$")
 	public void user_click_accept_on_createappointment_page() throws Throwable {
-		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/span/span[1]/input")).click();
+		driver.findElement(By
+				.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/span/span[1]/input"))
+				.click();
 	}
-	
+
 	@When("^user click appointment button$")
 	public void user_click_appointment_button() throws Throwable {
-		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[1]/div[3]/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div[3]/div/div/div/div")).click();
+		driver.findElement(By.xpath(
+				"//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[1]/div[3]/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div[3]/div/div/div/div"))
+				.click();
 
 	}
 
 	@Then("^user click save button$")
 	public void user_click_save_button() throws Throwable {
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div/button")).sendKeys(Keys.ENTER);
+
+	}
+	
+	@Then("^website has a pop up as \"([^\"]*)\"$")
+	public void has_a_pop_up_as(String massage) throws Throwable {
+		WebElement popup = driver.findElement(By.xpath("//*[@id=\"client-snackbar\"]"));
+		String txt_popup = popup.getText();
+		assertEquals(massage,txt_popup);
+		
 		
 	}
-
 	
+	@When("^user refresh$")
+	public void user_refresh() throws Throwable {
+		driver.navigate().refresh();
+	}
+
 }
