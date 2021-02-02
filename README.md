@@ -18,3 +18,16 @@ brew install chromedriver
 ```
 then go to 
 `setting > Security & Privacy > Allow Chromedriver`
+
+## To create data for test
+open terminal 
+
+```shell
+ mkfile -n (size file)  (path).(kind)
+```
+Example 
+open terminal 
+
+```shell
+ mkfile -n 1kb  folder1/folder2.jpg
+```
